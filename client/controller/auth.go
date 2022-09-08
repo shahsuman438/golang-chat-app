@@ -4,6 +4,7 @@ import (
 	"client/interfaces"
 	"client/service"
 	"encoding/json"
+	"io/ioutil"
 	"log"
 )
 
@@ -18,7 +19,6 @@ func Login(loginData interfaces.Login) {
 	} else {
 		user := interfaces.Register{}
 		json.NewDecoder(result.Body).Decode(&user)
-		log.Println(user)
 		Chat(user)
 	}
 
@@ -30,9 +30,14 @@ func Register(registerData interfaces.Register) {
 		log.Printf("somthing went wrong\n", err)
 		return
 	}
-	error := service.Register(json_data)
-	if error != nil {
-		log.Printf("Unable to Register", err)
+	result, error := service.Register(json_data)
+	if error != nil || result.StatusCode == 500 {
+		resBody, errors := ioutil.ReadAll(result.Body)
+		if errors != nil {
+			log.Printf("Unable to Register", errors)
+		}
+		log.Printf("Unable to Register", string(resBody), error)
+		result.Body.Close()
 		return
 	}
 	log.Printf("Hi! %s successfully Registerd\n", registerData.UserName)
