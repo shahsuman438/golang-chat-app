@@ -18,7 +18,6 @@ func Login(loginData interfaces.Login) {
 	} else {
 		user := interfaces.Register{}
 		json.NewDecoder(result.Body).Decode(&user)
-		log.Println(user)
 		Chat(user)
 	}
 
