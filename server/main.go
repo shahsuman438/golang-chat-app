@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	socketio "github.com/googollee/go-socket.io"
 	"log"
 	"net/http"
 	"server/controller"
 	db "server/db"
-	socketio "github.com/googollee/go-socket.io"
 )
 
 func main() {
@@ -14,29 +14,26 @@ func main() {
 	server.OnConnect("/", func(s socketio.Conn) error {
 		url := s.URL()
 		s.SetContext("")
-		s.Join("room1")
+		s.Join(url.Query().Get("room"))
 		fmt.Println("connected:", url.Query().Get("email"))
 		return nil
 	})
 
 	server.OnEvent("/", "chat message", func(s socketio.Conn, msg string) {
 		url := s.URL()
-		log.Printf("message from %v >> room1 : %v", url.Query().Get("email"), msg)
+		log.Printf("message from %v >> %v : %v", url.Query().Get("email"), url.Query().Get("room"), msg)
 
-		if server.BroadcastToRoom(s.Namespace(), "room1", "chat message", msg) {
+		if server.BroadcastToRoom(s.Namespace(), url.Query().Get("room"), "chat message", msg) {
 			chat := db.Chat{
 				Source:      url.Query().Get("email"),
-				Destination: "room1",
+				Destination: url.Query().Get("room"),
 				Message:     msg,
 			}
-			controller.SaveChat(&chat)
+			if msg != "" {
+				controller.SaveChat(&chat)
+			}
+			return
 		}
-	})
-	server.OnEvent("/", "bye", func(s socketio.Conn) string {
-		last := s.Context().(string)
-		s.Emit("bye", last)
-		s.Close()
-		return last
 	})
 	server.OnError("/", func(s socketio.Conn, e error) {
 		fmt.Println("meet error:", e)
@@ -46,7 +43,7 @@ func main() {
 	})
 	go server.Serve()
 	defer server.Close()
-	// db.Connet()
+	db.Connet()
 	http.Handle("/socket.io/", server)
 	http.HandleFunc("/api/login", controller.Login)
 	http.HandleFunc("/api/register", controller.Register)

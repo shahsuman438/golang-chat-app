@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func Login(loginData interfaces.Login) {
+func Login(loginData interfaces.Login, room string) {
 	json_data, err := json.Marshal(loginData)
 	if err != nil {
 		log.Printf("somthing went wrong\n", err)
@@ -19,7 +19,7 @@ func Login(loginData interfaces.Login) {
 	} else {
 		user := interfaces.Register{}
 		json.NewDecoder(result.Body).Decode(&user)
-		Chat(user)
+		Chat(user, room)
 	}
 
 }

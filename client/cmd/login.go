@@ -8,6 +8,7 @@ import (
 	"client/controller"
 	"client/interfaces"
 	"log"
+
 	"github.com/spf13/cobra"
 )
 
@@ -17,20 +18,24 @@ var loginCmd = &cobra.Command{
 	Short: "Login user with cmd email password",
 	Long:  `login for user auth`,
 	Run: func(cmd *cobra.Command, args []string) {
+		chatRoom, _ := cmd.Flags().GetString("room")
 		if len(args) != 2 {
 			log.Printf("Error:- use cmd ./Client login <email> <password>\n")
 		} else {
 			var loginData interfaces.Login
 			loginData.Email = args[0]
 			loginData.Password = args[1]
-			controller.Login(loginData)
+			if chatRoom == "" {
+				chatRoom = "default"
+			}
+			controller.Login(loginData,chatRoom)
 		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
-
+	rootCmd.PersistentFlags().String("room", "", "a room name to communicate")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

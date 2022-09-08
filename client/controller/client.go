@@ -3,18 +3,19 @@ package controller
 import (
 	"bufio"
 	"client/interfaces"
+	"github.com/zhouhui8915/go-socket.io-client"
 	"log"
 	"os"
-	"github.com/zhouhui8915/go-socket.io-client"
 )
 
-func Chat(user interfaces.Register) {
+func Chat(user interfaces.Register, room string) {
 	opts := &socketio_client.Options{
 		Transport: "websocket",
 		Query:     make(map[string]string),
 	}
 	opts.Query["email"] = user.Email
 	opts.Query["userName"] = user.UserName
+	opts.Query["room"] = room
 	uri := "http://localhost:8000/"
 	client, err := socketio_client.NewClient(uri, opts)
 	if err != nil {
