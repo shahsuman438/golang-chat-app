@@ -26,7 +26,7 @@ var loginCmd = &cobra.Command{
 			loginData.Email = args[0]
 			loginData.Password = args[1]
 			if chatRoom == "" {
-				chatRoom = "default"
+				chatRoom = "public"
 			}
 			controller.Login(loginData,chatRoom)
 		}

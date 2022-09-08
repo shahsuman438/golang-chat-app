@@ -43,8 +43,9 @@ Now you can login and register to start chating
 ## Use cmd to LOGIN
 
 ```sh
- $ ./client login <email> <password>
+ $ ./client login <email> <password> --room=<room name>
 ```
+default room name would be "public"
 ## Use cmd to REGISTER
 
 ```sh

@@ -3,9 +3,11 @@ package controller
 import (
 	"bufio"
 	"client/interfaces"
-	"github.com/zhouhui8915/go-socket.io-client"
+	"fmt"
 	"log"
 	"os"
+
+	"github.com/zhouhui8915/go-socket.io-client"
 )
 
 func Chat(user interfaces.Register, room string) {
@@ -38,6 +40,8 @@ func Chat(user interfaces.Register, room string) {
 	})
 
 	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("##### START YOUR CONVERSATION HERE ######")
+	fmt.Println("           Room:- " + room)
 	for {
 		data, _, _ := reader.ReadLine()
 		command := string(data)
