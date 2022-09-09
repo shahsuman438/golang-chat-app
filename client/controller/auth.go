@@ -1,14 +1,14 @@
 package controller
 
 import (
-	"client/interfaces"
+	"client/models"
 	"client/service"
 	"encoding/json"
 	"io/ioutil"
 	"log"
 )
 
-func Login(loginData interfaces.Login, room string) {
+func Login(loginData models.Login, room string) {
 	json_data, err := json.Marshal(loginData)
 	if err != nil {
 		log.Printf("somthing went wrong\n", err)
@@ -17,14 +17,14 @@ func Login(loginData interfaces.Login, room string) {
 	if error != nil || result.StatusCode == 401 {
 		log.Printf("Unable to Login please check email and Password")
 	} else {
-		user := interfaces.Register{}
+		user := models.Register{}
 		json.NewDecoder(result.Body).Decode(&user)
 		Chat(user, room)
 	}
 
 }
 
-func Register(registerData interfaces.Register) {
+func Register(registerData models.Register) {
 	json_data, err := json.Marshal(registerData)
 	if err != nil {
 		log.Printf("somthing went wrong\n", err)

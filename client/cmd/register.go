@@ -6,7 +6,7 @@ package cmd
 
 import (
 	"client/controller"
-	"client/interfaces"
+	"client/models"
 	"github.com/spf13/cobra"
 	"log"
 )
@@ -27,7 +27,7 @@ var registerCmd = &cobra.Command{
 			log.Printf("Error:- use cmd ./Client register <email> <user name> <password>\n")
 		} else {
 			// values := map[string]string{"email": args[0], "userName": args[1], "password": args[2]}
-			var values interfaces.Register
+			var values models.Register
 			values.Email = args[0]
 			values.UserName = args[1]
 			values.Password = args[2]

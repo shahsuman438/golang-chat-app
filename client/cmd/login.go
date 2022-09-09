@@ -6,7 +6,7 @@ package cmd
 
 import (
 	"client/controller"
-	"client/interfaces"
+	"client/models"
 	"log"
 
 	"github.com/spf13/cobra"
@@ -22,7 +22,7 @@ var loginCmd = &cobra.Command{
 		if len(args) != 2 {
 			log.Printf("Error:- use cmd ./Client login <email> <password>\n")
 		} else {
-			var loginData interfaces.Login
+			var loginData models.Login
 			loginData.Email = args[0]
 			loginData.Password = args[1]
 			if chatRoom == "" {

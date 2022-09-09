@@ -1,4 +1,4 @@
-package interfaces
+package models
 
 type Login struct {
 	Email    string

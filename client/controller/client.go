@@ -2,7 +2,7 @@ package controller
 
 import (
 	"bufio"
-	"client/interfaces"
+	"client/models"
 	"fmt"
 	"log"
 	"os"
@@ -10,7 +10,7 @@ import (
 	"github.com/zhouhui8915/go-socket.io-client"
 )
 
-func Chat(user interfaces.Register, room string) {
+func Chat(user models.Register, room string) {
 	opts := &socketio_client.Options{
 		Transport: "websocket",
 		Query:     make(map[string]string),
