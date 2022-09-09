@@ -35,7 +35,7 @@ var loginCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
-	rootCmd.PersistentFlags().String("room", "", "a room name to communicate")
+	loginCmd.PersistentFlags().String("room", "", "a room name to communicate")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
